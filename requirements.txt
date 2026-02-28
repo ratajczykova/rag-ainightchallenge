@@ -1,0 +1,11 @@
+streamlit
+psycopg2-binary
+sentence-transformers
+python-dotenv
+groq
+pypdf
+python-docx
+pgvector
+torch
+streamlit-echarts
+streamlit-lottie

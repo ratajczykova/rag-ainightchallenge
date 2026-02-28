@@ -1,0 +1,106 @@
+/* Cyber-Industrial Bakery Aesthetic */
+:root {
+    --neon-cyan: #00f2ff;
+    --bakery-gold: #ffb700;
+    --lab-navy: #0a0b10;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+.stApp {
+    background: radial-gradient(circle at 50% 50%, #1a1e2e 0%, #0a0b10 100%);
+    color: #e0e6ed;
+}
+
+/* Glassmorphism Cards */
+.holographic-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    border-left: 4px solid var(--neon-cyan);
+    position: relative;
+    overflow: hidden;
+}
+
+.holographic-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+    animation: scan-line 4s linear infinite;
+}
+
+@keyframes scan-line {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(1000%); }
+}
+
+/* Glowing Form Controls */
+.stTextInput > div > div > input {
+    background: rgba(0, 242, 255, 0.05) !important;
+    border: 1px solid rgba(0, 242, 255, 0.2) !important;
+    color: var(--neon-cyan) !important;
+}
+
+/* Pulsing Quest Button */
+.stButton > button {
+    background: linear-gradient(45deg, #00416A 0%, #00f2ff 100%) !important;
+    border: none !important;
+    color: white !important;
+    font-weight: bold !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    box-shadow: 0 0 15px rgba(0, 242, 255, 0.4) !important;
+    transition: all 0.3s ease !important;
+    animation: pulse-glow 2s infinite;
+}
+
+@keyframes pulse-glow {
+    0% { box-shadow: 0 0 5px rgba(0, 242, 255, 0.4); }
+    50% { box-shadow: 0 0 20px rgba(0, 242, 255, 0.8); }
+    100% { box-shadow: 0 0 5px rgba(0, 242, 255, 0.4); }
+}
+
+/* Lab Log Terminal */
+.lab-log {
+    font-family: 'Courier New', Courier, monospace;
+    background: #000;
+    color: #0f0;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 0.8em;
+    height: 150px;
+    overflow-y: auto;
+    border: 1px solid #333;
+}
+
+/* Battery Energy Level */
+.battery-container {
+    width: 30px;
+    height: 60px;
+    border: 2px solid #555;
+    border-radius: 4px;
+    position: relative;
+    padding: 2px;
+}
+
+.battery-level {
+    width: 100%;
+    background: var(--bakery-gold);
+    position: absolute;
+    bottom: 2px;
+    left: 2px;
+    right: 2px;
+    transition: height 0.5s ease;
+}
+
+.rising-bread {
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}

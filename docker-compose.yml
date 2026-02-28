@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  db:
+    image: ankane/pgvector:v0.5.1
+    container_name: knowledgequest_db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: knowledgequest
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d knowledgequest"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: knowledgequest_app
+    ports:
+      - "8501:8501"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=knowledgequest
+      - DB_USER=postgres
+      - DB_PASS=postgres
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - PYTHONPATH=/app
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./data:/app/data
+      - ./core:/app/core
+      - ./scripts:/app/scripts
+      - ./web:/app/web
+
+volumes:
+  postgres_data:
