@@ -11,13 +11,21 @@ class Database:
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super(Database, cls).__new__(cls)
-            cls._instance.connection_pool = psycopg2.pool.SimpleConnectionPool(
-                1, 10,
-                host=os.getenv("DB_HOST", "localhost"),
-                database=os.getenv("DB_NAME", "knowledgequest"),
-                user=os.getenv("DB_USER", "postgres"),
-                password=os.getenv("DB_PASS", "postgres")
-            )
+            
+            # Check for a single connection string (Neon style)
+            db_url = os.getenv("DATABASE_URL")
+            
+            if db_url:
+                cls._instance.connection_pool = psycopg2.pool.SimpleConnectionPool(1, 20, dsn=db_url)
+            else:
+                # Fallback to individual variables for local dev
+                cls._instance.connection_pool = psycopg2.pool.SimpleConnectionPool(
+                    1, 10,
+                    host=os.getenv("DB_HOST", "localhost"),
+                    database=os.getenv("DB_NAME", "knowledgequest"),
+                    user=os.getenv("DB_USER", "postgres"),
+                    password=os.getenv("DB_PASS", "postgres")
+                )
             cls._instance.init_db()
         return cls._instance
 

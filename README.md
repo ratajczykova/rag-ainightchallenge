@@ -88,3 +88,4 @@ If you have PostgreSQL and `pgvector` installed locally:
 ---
 
 **Developed for Rose Blanche Group | KnowledgeQuest RAG Module**
+**Made for AI Night Challenge by CTRL+S**

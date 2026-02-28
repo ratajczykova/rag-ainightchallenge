@@ -49,8 +49,12 @@ def main():
     db = Database()
     embedder = Embedder()
     
-    # Absolute path for Docker consistency
+    # Path resolution for Docker vs Local/Cloud execution
     data_dir = "/app/data"
+    if not os.path.exists(data_dir):
+        # Fallback to local data folder if running outside Docker
+        data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data'))
+
     print(f"Target directory: {data_dir}", flush=True)
 
     if not os.path.exists(data_dir):

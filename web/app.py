@@ -57,7 +57,7 @@ llm = LLMManager()
 
 # --- CUSTOM COMPONENTS ---
 
-def render_molecular_gauge(score):
+def render_molecular_gauge(score, key=None):
     val = int(score * 100)
     color = "#ff4b2b" if val < 40 else ("#ffaa00" if val < 70 else "#00ff88")
     status = "INERT" if val < 40 else ("REACTING" if val < 70 else "STABLE")
@@ -93,12 +93,15 @@ def render_molecular_gauge(score):
             "data": [{"value": val}]
         }]
     }
-    st_echarts(options=option, height="120px")
+    st_echarts(options=option, height="120px", key=key)
     st.markdown(f"<div style='text-align:center; margin-top:-40px; color:{color}; font-weight:bold; font-size:0.8em;'>{status} COMPOUND</div>", unsafe_allow_html=True)
 
 def render_battery(query):
-    length = len(query.split())
-    level = min(100, length * 10)
+    words = query.split()
+    length = len(words)
+    # Hybrid calculation: Reward both word count and word complexity (length)
+    char_bonus = len(query.replace(" ", "")) * 2
+    level = min(100, (length * 15) + char_bonus)
     color = "var(--bakery-gold)"
     if level < 30: color = "#ff4b2b"
     elif level < 70: color = "#ffaa00"
@@ -125,24 +128,7 @@ def render_bread_svg(scale=1.0):
     </div>
     """, unsafe_allow_html=True)
 
-# --- SIDEBAR ---
-with st.sidebar:
-    st.markdown("<h2 style='color:var(--neon-cyan);'>🧪 INNOVATION LAB</h2>", unsafe_allow_html=True)
-    if lottie_molecule:
-        st_lottie(lottie_molecule, height=150, key="molecule")
-    
-    st.markdown("---")
-    st.markdown(f"""
-        <div style="text-align:center;">
-            <span style="font-size:0.7em; color:#888; font-family:monospace;">LAB SEARCH STREAK</span><br>
-            <span style="font-size:2em; font-weight:bold; color:var(--bakery-gold);">🔥 {st.session_state.streak}</span>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("---")
-    render_bread_svg(st.session_state.bread_scale)
-    st.markdown("---")
-    st.caption("ROSE BLANCHE R&D TERMINAL v2.0")
+# --- (Sidebar moved to bottom for state sync) ---
 
 # --- MAIN UI ---
 st.markdown("<h1 style='text-align: center; color:var(--neon-cyan); font-family:monospace;'>KNOWLEDGE QUEST <span style='color:#fff;'>LAB</span></h1>", unsafe_allow_html=True)
@@ -175,7 +161,7 @@ if st.button("EMBARK ON RESEARCH QUEST", use_container_width=True):
             
             if results:
                 best_score = results[0][2]
-                if best_score > 0.75:
+                if best_score > 0.70:
                     st.session_state.streak += 1
                     st.session_state.bread_scale = 1.3
                     add_log("EXPERT MATCH FOUND. Formulation data stable.")
@@ -196,7 +182,7 @@ if st.button("EMBARK ON RESEARCH QUEST", use_container_width=True):
                                 <p style="font-size: 0.85em; line-height:1.4; height:120px; overflow-y:auto;">{fragment}</p>
                             </div>
                         """, unsafe_allow_html=True)
-                        render_molecular_gauge(score)
+                        render_molecular_gauge(score, key=f"gauge_{idx}")
                 
                 st.markdown("---")
                 st.markdown("<h3 style='color:var(--bakery-gold); font-family:monospace;'>🧠 DEEP LABORATORY EXPLORATION</h3>", unsafe_allow_html=True)
@@ -216,3 +202,22 @@ log_text = "<br>".join(st.session_state.logs)
 st.markdown(f'<div class="lab-log">{log_text}</div>', unsafe_allow_html=True)
 
 st.markdown("<br><p style='text-align:center; color:#333; font-size:0.6em; font-family:monospace;'>CONFIDENTIAL: ROSE BLANCHE R&D PROPERTIES</p>", unsafe_allow_html=True)
+
+# --- SIDEBAR RENDERED AT END TO ENSURE LATEST STATE REFLECTION ---
+with st.sidebar:
+    st.markdown("<h2 style='color:var(--neon-cyan);'>🧪 INNOVATION LAB</h2>", unsafe_allow_html=True)
+    if lottie_molecule:
+        st_lottie(lottie_molecule, height=150, key="molecule")
+    
+    st.markdown("---")
+    st.markdown(f"""
+        <div style="text-align:center;">
+            <span style="font-size:0.7em; color:#888; font-family:monospace;">LAB SEARCH STREAK</span><br>
+            <span style="font-size:2em; font-weight:bold; color:var(--bakery-gold);">🔥 {st.session_state.streak}</span>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("---")
+    render_bread_svg(st.session_state.bread_scale)
+    st.markdown("---")
+    st.caption("ROSE BLANCHE R&D TERMINAL v2.0")
