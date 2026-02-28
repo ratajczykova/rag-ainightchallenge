@@ -2,8 +2,8 @@
 
 KnowledgeQuest is a premium, gamified Retrieval-Augmented Generation (RAG) module designed to search technical sheets for bakery and pastry ingredients. It uses semantic search to provide highly relevant context and AI-generated deep exploration questions.
 
-Deployment Link: https://rag-ainightchallenge-eo8h92gtlguldfujzkafbm.streamlit.app/
-Demo Video: youtube.com/watch?v=iWKImK_a59M&feature=youtu.be
+- Deployment Link: https://rag-ainightchallenge-eo8h92gtlguldfujzkafbm.streamlit.app/
+- Demo Video: youtube.com/watch?v=iWKImK_a59M&feature=youtu.be
 ---
 
 ## 🚀 Quick Start (Recommended: Docker)
